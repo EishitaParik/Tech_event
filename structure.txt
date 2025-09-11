@@ -1,0 +1,49 @@
+.
+├── app
+│   ├── api
+│   │   ├── get-event
+│   │   │   └── route.ts
+│   │   └── save-event
+│   │       └── route.ts
+│   ├── auth
+│   │   └── page.tsx
+│   ├── components
+│   │   ├── csv.ts
+│   │   ├── eventform.tsx
+│   │   ├── event.tsx
+│   │   ├── footer.tsx
+│   │   ├── Hero.tsx
+│   │   ├── Hyperspeed.tsx
+│   │   ├── navbar.tsx
+│   │   └── ThemeToggle.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── loader.tsx
+│   └── page.tsx
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── data
+│   ├── events.csv
+│   ├── live_events_dataset.csv
+│   └── past_events.csv
+├── eslint.config.mjs
+├── LICENSE
+├── next.config.ts
+├── package.json
+├── package-lock.json
+├── postcss.config.mjs
+├── public
+│   ├── android-chrome-192x192.png
+│   ├── android-chrome-512x512.png
+│   ├── apple-touch-icon.png
+│   ├── favicon-16x16.png
+│   ├── gssoc logo.png
+│   ├── logo.png
+│   └── site.webmanifest
+├── README.md
+├── structure.txt
+├── tailwind.config.ts
+└── tsconfig.json
+
+9 directories, 38 files
