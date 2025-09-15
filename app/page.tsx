@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
+import EventComponent from "./components/event";
 
 // Mock Components - Replace with your actual components
 const Navbar = () => (
@@ -19,29 +20,7 @@ const Hero = ({ searchQuery, setSearchQuery }) => (
         />
     </div>
 );
-const Carousel = () => (
-    <div className="p-8 bg-gray-100 dark:bg-gray-700 m-4 rounded-lg">
-        <h3 className="text-2xl font-semibold mb-4">Featured Events</h3>
-        <p>This is a placeholder for your Carousel component.</p>
-    </div>
-);
-const EventGrid = ({ events }) => (
-    <div className="p-8">
-        <h3 className="text-2xl font-semibold mb-4">Upcoming Events</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {events.length > 0 ? (
-                events.map((event, index) => (
-                    <div key={index} className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                        <h4 className="text-lg font-bold">{event["Event Name"]}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{event.Location}</p>
-                    </div>
-                ))
-            ) : (
-                <p>No events found.</p>
-            )}
-        </div>
-    </div>
-);
+// Remove placeholder Carousel and EventGrid, use EventComponent
 const EventForm = ({ onSave }) => (
     <div className="p-8 bg-gray-100 dark:bg-gray-700 m-4 rounded-lg">
         <h3 className="text-2xl font-semibold mb-4">Add a New Event</h3>
@@ -66,7 +45,6 @@ const Loader = () => (
 
 export default function Home() {
     const [events, setEvents] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(true);
     const [darkMode, setDarkMode] = useState(false);
 
@@ -85,10 +63,7 @@ export default function Home() {
         setEvents([...events, newEvent]);
     };
 
-    const filteredEvents = events.filter((event) =>
-        event["Event Name"]?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.Location?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+
 
     if (loading) return <Loader />;
 
@@ -104,9 +79,8 @@ export default function Home() {
                         Toggle {darkMode ? "Light" : "Dark"} Mode
                     </button>
                 </div>
-                <Hero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-                <Carousel />
-                <EventGrid events={filteredEvents || []} />
+                {/* Use the advanced EventComponent which includes SearchBar, Carousel, and EventGrid with filters */}
+                <EventComponent />
                 <EventForm onSave={handleSaveEvent} />
                 <Footer />
             </div>

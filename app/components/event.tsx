@@ -16,12 +16,33 @@ interface Event {
 interface SearchBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  filterType?: string;
+  setFilterType?: (type: string) => void;
+  filterLocation?: string;
+  setFilterLocation?: (location: string) => void;
+  filterDate?: string;
+  setFilterDate?: (date: string) => void;
   onSearch?: () => void;
   onTagClick?: (tag: string) => void;
+  eventTypes?: string[];
+  locations?: string[];
 }
 
-// Search Bar Component with Red/Black Theme
-const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery, onSearch, onTagClick }) => {
+// Search Bar Component with Red/Black Theme and Advanced Filters
+const SearchBar: React.FC<SearchBarProps> = ({
+  searchQuery,
+  setSearchQuery,
+  filterType,
+  setFilterType,
+  filterLocation,
+  setFilterLocation,
+  filterDate,
+  setFilterDate,
+  onSearch,
+  onTagClick,
+  eventTypes = [],
+  locations = []
+}) => {
   const [focusedInput, setFocusedInput] = useState(false);
 
   const handleSearch = () => {
@@ -36,11 +57,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery, onSe
     <div className="w-full max-w-4xl mx-auto mb-8 transform translate-y-0 opacity-100 transition-all duration-800">
       <div className="relative group">
         {/* Search Input Container */}
-        <div className={`relative transform transition-all duration-300 ${focusedInput ? 'scale-105' : 'scale-100'}`}>
+        <div className={`relative transform transition-all duration-300 ${focusedInput ? 'scale-105' : 'scale-100'}`}> 
           <div className="absolute inset-0 bg-gradient-to-r from-red-700 to-slate-800 rounded-2xl blur-sm opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
           <div className="relative bg-white rounded-2xl border-2 border-gray-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-            <div className="flex items-center px-4 py-3">
-              <div className={`transition-colors duration-300 mr-3 ${focusedInput ? 'text-red-700' : 'text-gray-400'}`}>
+            <div className="flex flex-col md:flex-row md:items-center px-4 py-3 gap-2 md:gap-0">
+              <div className={`transition-colors duration-300 mr-3 ${focusedInput ? 'text-red-700' : 'text-gray-400'}`}> 
                 <Search className="w-5 h-5" />
               </div>
               <input
@@ -53,6 +74,42 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery, onSe
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                 className="flex-1 text-base text-gray-800 placeholder-gray-500 bg-transparent focus:outline-none font-medium"
               />
+              {/* Event Type Filter */}
+              {setFilterType && (
+                <select
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                  className="ml-2 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+                >
+                  <option value="">All Types</option>
+                  {eventTypes.map((type) => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
+                </select>
+              )}
+              {/* Location Filter */}
+              {setFilterLocation && (
+                <select
+                  value={filterLocation}
+                  onChange={(e) => setFilterLocation(e.target.value)}
+                  className="ml-2 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+                >
+                  <option value="">All Locations</option>
+                  {locations.map((loc) => (
+                    <option key={loc} value={loc}>{loc}</option>
+                  ))}
+                </select>
+              )}
+              {/* Date Filter */}
+              {setFilterDate && (
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className="ml-2 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+                  placeholder="Date"
+                />
+              )}
               <button
                 onClick={handleSearch}
                 className="ml-3 bg-gradient-to-r from-red-800 to-slate-900 text-white px-6 py-2 rounded-lg font-semibold hover:from-red-900 hover:to-slate-800 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
@@ -135,7 +192,7 @@ const Carousel: React.FC<CarouselProps> = ({ onJoinEvent }) => {
     return () => clearInterval(interval);
   }, [events]);
 
-  if (events.length === 0)
+  if (events.length === 0) {
     return (
       <div className="w-full min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -144,187 +201,101 @@ const Carousel: React.FC<CarouselProps> = ({ onJoinEvent }) => {
         </div>
       </div>
     );
+  }
 
   const event = events[current];
 
   return (
-
-    
     <div className="w-full h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-600 via-blue-500 to-purple-500 px-4 py-10 dark:bg-gray-900">
       <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-wide mb-6 text-center drop-shadow-lg">
         Live Events
       </h1>
 
       <div className="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 max-w-2xl w-full transition-all duration-700 ease-in-out">
-        <h2 className="text-3xl font-extrabold mb-3 text-center text-gray-800 dark:text-white">
-          {event["Event Name"]}
-        </h2>
-        <p className="text-blue-600 dark:text-blue-300 text-center text-lg font-medium mb-2">
-          {event["Event Type"]} &bull; {event.Location}
-        </p>
-        <p className="text-gray-700 dark:text-gray-300 text-center mb-1">
-          {event["Event Date"]} at {event["Event Time"]}
-        </p>
-        <p className="text-gray-600 dark:text-gray-400 text-center mb-2">
-          Organizer: {event["Organizer Name"]}
-        </p>
-        <p className="text-gray-500 dark:text-gray-300 text-center">{event.Address}</p>
-      </div>
-
-      <div className="flex justify-center mt-6 space-x-2">
-        {events.map((_, idx) => (
-          <button
-            key={idx}
-            className={`w-3 h-3 rounded-full ${
-              idx === current
-                ? "bg-white border border-blue-500"
-                : "bg-gray-300 dark:bg-gray-600"
-            }`}
-            onClick={() => setCurrent(idx)}
-            aria-label={`Go to event ${idx + 1}`}
-=======
-    <div className="relative w-full min-h-screen bg-white overflow-hidden" id="home">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-red-100 rounded-full blur-3xl opacity-30 animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-gray-100 rounded-full blur-3xl opacity-30 animate-pulse" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-100 rounded-full blur-3xl opacity-20 animate-pulse" />
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-12">
-        {/* Header Section */}
-        <div className="text-center mb-12 animate-fade-in-up">
-          <div className="inline-flex items-center px-6 py-3 bg-white border-2 border-red-200 rounded-full shadow-lg mb-6 hover:scale-105 transition-transform duration-300">
-            <div className="animate-spin">
-              <Play className="w-5 h-5 text-red-500 mr-3" />
+        {/* Event Card Content */}
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          {/* Left Column - Event Details */}
+          <div className="space-y-6">
+            <div className="flex flex-wrap gap-3 mb-4">
+              <span className="px-4 py-2 bg-gradient-to-r from-red-900 to-slate-800 text-white rounded-full text-sm font-semibold shadow-lg hover:scale-110 transition-transform duration-200">
+                {event["Event Type"]}
+              </span>
+              <span className="px-4 py-2 bg-gradient-to-r from-slate-700 to-red-800 text-white rounded-full text-sm font-semibold shadow-lg hover:scale-110 transition-transform duration-200">
+                {event.Location}
+              </span>
             </div>
-            <span className="text-red-600 font-semibold">LIVE NOW</span>
+
+            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight dark:text-white">
+              {event["Event Name"]}
+            </h2>
+
+            <div className="space-y-3">
+              {[
+                { icon: Calendar, text: event["Event Date"], bg: "bg-red-100", color: "text-red-700" },
+                { icon: Clock, text: event["Event Time"], bg: "bg-slate-100", color: "text-slate-700" },
+                { icon: User, text: event["Organizer Name"], bg: "bg-red-100", color: "text-red-700" },
+                { icon: MapPin, text: event.Address, bg: "bg-slate-100", color: "text-slate-700" }
+              ].map((item, index) => (
+                <div 
+                  key={index}
+                  className="flex items-center text-gray-700 dark:text-gray-300 hover:translate-x-2 transition-transform duration-200"
+                >
+                  <div className={`w-8 h-8 ${item.bg} rounded-full flex items-center justify-center mr-3 hover:scale-110 transition-transform duration-200`}>
+                    <item.icon className={`w-4 h-4 ${item.color}`} />
+                  </div>
+                  <span className="font-medium text-sm">{item.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-900 to-slate-800">
-              Live Events
-            </span>
-          </h1>
-
-          <p className="text-gray-600 text-base max-w-xl mx-auto">
-            Join these happening events right now and connect with like-minded people
-          </p>
-        </div>
-
-        {/* Event Card */}
-
-    
-          <div className="absolute inset-0 bg-gradient-to-r from-red-200 to-slate-200 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
-          
-
-        <motion.div 
-          className="relative w-full max-w-3xl"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          whileHover={{ scale: 1.02 }}
-        >
-          <motion.div 
-            className="absolute inset-0 bg-gradient-to-r from-red-200 to-slate-200 rounded-3xl blur-xl opacity-40"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              opacity: [0.4, 0.6, 0.4]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-
-            
-            />
-
-          <div className="relative bg-white rounded-3xl border-2 border-gray-100 shadow-2xl overflow-hidden">
-            <div className="p-8 sm:p-12">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                
-                {/* Left Column - Event Details */}
-                <div className="space-y-6">
-                  <div className="flex flex-wrap gap-3 mb-4">
-                    <span className="px-4 py-2 bg-gradient-to-r from-red-900 to-slate-800 text-white rounded-full text-sm font-semibold shadow-lg hover:scale-110 transition-transform duration-200">
-                      {event["Event Type"]}
-                    </span>
-                    <span className="px-4 py-2 bg-gradient-to-r from-slate-700 to-red-800 text-white rounded-full text-sm font-semibold shadow-lg hover:scale-110 transition-transform duration-200">
-                      {event.Location}
-                    </span>
-                  </div>
-
-                  <h2 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight">
-                    {event["Event Name"]}
-                  </h2>
-
-                  <div className="space-y-3">
-                    {[
-                      { icon: Calendar, text: event["Event Date"], bg: "bg-red-100", color: "text-red-700" },
-                      { icon: Clock, text: event["Event Time"], bg: "bg-slate-100", color: "text-slate-700" },
-                      { icon: User, text: event["Organizer Name"], bg: "bg-red-100", color: "text-red-700" },
-                      { icon: MapPin, text: event.Address, bg: "bg-slate-100", color: "text-slate-700" }
-                    ].map((item, index) => (
-                      <div 
-                        key={index}
-                        className="flex items-center text-gray-700 hover:translate-x-2 transition-transform duration-200"
-                      >
-                        <div className={`w-8 h-8 ${item.bg} rounded-full flex items-center justify-center mr-3 hover:scale-110 transition-transform duration-200`}>
-                          <item.icon className={`w-4 h-4 ${item.color}`} />
-                        </div>
-                        <span className="font-medium text-sm">{item.text}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Right Column - Action Section */}
-                <div className="text-center space-y-6">
-                  <div className="relative">
-                    <div className="w-32 h-32 mx-auto bg-gradient-to-br from-red-700 to-slate-800 rounded-full flex items-center justify-center mb-6 shadow-2xl hover:scale-110 transition-transform duration-300">
-                      <div className="animate-spin">
-                        <Sparkles className="w-16 h-16 text-white" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <button 
-                    onClick={onJoinEvent}
-                    className="group w-full bg-gradient-to-r from-red-700 to-slate-800 text-white font-bold py-4 px-8 rounded-2xl hover:scale-105 transform transition-all duration-300 shadow-xl hover:shadow-2xl"
-                  >
-                    <span className="flex items-center justify-center">
-                      Join Event
-                      <div className="ml-2 group-hover:translate-x-1 transition-transform duration-200">
-                        <ArrowRight className="w-5 h-5" />
-                      </div>
-                    </span>
-                  </button>
-
-                  {/* Rating & Attendance */}
-                  <div className="flex items-center justify-center space-x-2 text-gray-600">
-                    <div className="animate-spin">
-                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                    </div>
-                    <span className="text-sm font-medium">4.8 rating • 234 attendees</span>
-                  </div>
+          {/* Right Column - Action Section */}
+          <div className="text-center space-y-6">
+            <div className="relative">
+              <div className="w-32 h-32 mx-auto bg-gradient-to-br from-red-700 to-slate-800 rounded-full flex items-center justify-center mb-6 shadow-2xl hover:scale-110 transition-transform duration-300">
+                <div className="animate-spin">
+                  <Sparkles className="w-16 h-16 text-white" />
                 </div>
               </div>
             </div>
+
+            <button 
+              onClick={onJoinEvent}
+              className="group w-full bg-gradient-to-r from-red-700 to-slate-800 text-white font-bold py-4 px-8 rounded-2xl hover:scale-105 transform transition-all duration-300 shadow-xl hover:shadow-2xl"
+            >
+              <span className="flex items-center justify-center">
+                Join Event
+                <div className="ml-2 group-hover:translate-x-1 transition-transform duration-200">
+                  <ArrowRight className="w-5 h-5" />
+                </div>
+              </span>
+            </button>
+
+            {/* Rating & Attendance */}
+            <div className="flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-400">
+              <div className="animate-spin">
+                <Star className="w-4 h-4 text-yellow-500 fill-current" />
+              </div>
+              <span className="text-sm font-medium">4.8 rating • 234 attendees</span>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Navigation Dots */}
-        <div className="flex justify-center mt-8 space-x-3">
-          {events.map((_, idx) => (
-            <button
-              key={idx}
-              className={`w-4 h-4 rounded-full transition-all duration-300 hover:scale-125 ${
-                idx === current
-                  ? "bg-gradient-to-r from-red-700 to-slate-800 scale-125 shadow-lg"
-                  : "bg-gray-300 hover:bg-gray-400"
-              }`}
-              onClick={() => setCurrent(idx)}
-              aria-label={`Go to event ${idx + 1}`}
-            />
-          ))}
-        </div>
+      {/* Navigation Dots */}
+      <div className="flex justify-center mt-8 space-x-3">
+        {events.map((_, idx) => (
+          <button
+            key={idx}
+            className={`w-4 h-4 rounded-full transition-all duration-300 hover:scale-125 ${
+              idx === current
+                ? "bg-gradient-to-r from-red-700 to-slate-800 scale-125 shadow-lg"
+                : "bg-gray-300 hover:bg-gray-400"
+            }`}
+            onClick={() => setCurrent(idx)}
+            aria-label={`Go to event ${idx + 1}`}
+          />
+        ))}
       </div>
     </div>
   );
@@ -336,91 +307,12 @@ interface EventGridProps {
   onRegisterNow: () => void;
 }
 
-
 const EventGrid: React.FC<EventGridProps> = ({ events, onRegisterNow }) => {
-
-
-
-              if (!events || events.length === 0) {
-    return <p className="text-center text-gray-500 dark:text-gray-400">No events found.</p>;
-  }
-
-  const upcomingEvents = events.filter(event => !event.isPastEvent);
-  const pastEvents = events.filter(event => event.isPastEvent);
-
-  return (
-    <div className="p-6 bg-gray-50 dark:bg-gray-900" id="event">
-      {/* Upcoming Events Section */}
-      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white">
-        Upcoming Tech Events
-      </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        {upcomingEvents.map((event, index) => (
-          <div
-            key={`upcoming-${index}`}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
-          >
-            <div className="p-6">
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-900">
-                  {event["Event Type"]}
-                </span>
-                <span className="bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900 px-3 py-1 rounded-full text-sm font-medium">
-                  {event.Location}
-                </span>
-              </div>
-              <h2 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{event["Event Name"]}</h2>
-              <div className="text-gray-700 dark:text-gray-300 mb-1">
-                <strong>Organizer:</strong> {event["Organizer Name"]}
-              </div>
-              <div className="text-gray-600 dark:text-gray-400 mb-1">
-                {event["Event Date"]} at {event["Event Time"]}
-              </div>
-              <div className="text-gray-500 dark:text-gray-400">{event.Address}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Past Events Section */}
-      {pastEvents.length > 0 && (
-        <>
-          <h1 className="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white">
-            Past Events
-          </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pastEvents.map((event, index) => (
-              <div
-                key={`past-${index}`}
-                className="bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden opacity-75"
-              >
-                <div className="p-6">
-                  <div className="flex flex-wrap items-center gap-2 mb-4">
-                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-700 dark:bg-gray-300 dark:text-gray-900">
-                      {event["Event Type"]}
-                    </span>
-                    <span className="bg-gray-200 text-gray-700 dark:bg-gray-300 dark:text-gray-900 px-3 py-1 rounded-full text-sm font-medium">
-                      {event.Location}
-                    </span>
-                    <span className="bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900 px-3 py-1 rounded-full text-sm font-medium">
-                      Past Event
-                    </span>
-                  </div>
-                  <h2 className="text-xl font-bold mb-2 text-gray-700 dark:text-white">
-                    {event["Event Name"]}
-                  </h2>
-                  <div className="text-gray-600 dark:text-gray-300 mb-1">
-                    <strong>Organizer:</strong> {event["Organizer Name"]}
-                  </div>
-                  <div className="text-gray-500 dark:text-gray-400 mb-1">
-                    {event["Event Date"]} at {event["Event Time"]}
-                  </div>
-                  <div className="text-gray-400 dark:text-gray-500">{event.Address}</div>
-
   // State for search query and visible cards for animation
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
-
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("");
+  const [filterLocation, setFilterLocation] = useState("");
+  const [filterDate, setFilterDate] = useState("");
   const [eventsToShow, setEventsToShow] = useState(6);
 
   // Sample events for demo
@@ -501,13 +393,22 @@ const EventGrid: React.FC<EventGridProps> = ({ events, onRegisterNow }) => {
 
   const displayEvents = events && events.length > 0 ? events : sampleEvents;
 
-  // Filter events based on search query
-  const filteredEvents = displayEvents.filter(event =>
-    event["Event Name"].toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event.Location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event["Event Type"].toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event["Organizer Name"].toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Get unique event types and locations for filter dropdowns
+  const eventTypes = Array.from(new Set(displayEvents.map(e => e["Event Type"])));
+  const locations = Array.from(new Set(displayEvents.map(e => e.Location)));
+
+  // Advanced filter logic
+  const filteredEvents = displayEvents.filter(event => {
+    const matchesQuery =
+      event["Event Name"].toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.Location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event["Event Type"].toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event["Organizer Name"].toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesType = filterType ? event["Event Type"] === filterType : true;
+    const matchesLocation = filterLocation ? event.Location === filterLocation : true;
+    const matchesDate = filterDate ? event["Event Date"] === filterDate : true;
+    return matchesQuery && matchesType && matchesLocation && matchesDate;
+  });
 
   const handleSearch = () => {
     setEventsToShow(6);
@@ -614,12 +515,20 @@ const EventGrid: React.FC<EventGridProps> = ({ events, onRegisterNow }) => {
             </p>
           </div>
 
-          {/* Search Bar */}
+          {/* Search Bar with Filters */}
           <SearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
+            filterType={filterType}
+            setFilterType={setFilterType}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterDate={filterDate}
+            setFilterDate={setFilterDate}
             onSearch={handleSearch}
             onTagClick={handleTagClick}
+            eventTypes={eventTypes}
+            locations={locations}
           />
 
           {/* Search Results Info */}
@@ -919,4 +828,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
