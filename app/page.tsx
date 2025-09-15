@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import EventComponent from "./components/event";
+import EventForm from "./components/eventform";
 
 // Mock Components - Replace with your actual components
 const Navbar = () => (
@@ -20,18 +21,7 @@ const Hero = ({ searchQuery, setSearchQuery }) => (
         />
     </div>
 );
-// Remove placeholder Carousel and EventGrid, use EventComponent
-const EventForm = ({ onSave }) => (
-    <div className="p-8 bg-gray-100 dark:bg-gray-700 m-4 rounded-lg">
-        <h3 className="text-2xl font-semibold mb-4">Add a New Event</h3>
-        <button
-            onClick={() => onSave({ "Event Name": "New Test Event", Location: "Test Location" })}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-        >
-            Save Event
-        </button>
-    </div>
-);
+// Use the real EventForm from components/eventform
 const Footer = () => (
     <footer className="p-4 text-center text-gray-500 dark:text-gray-400">
         <p>&copy; 2025 Eventify. All rights reserved.</p>
@@ -80,7 +70,7 @@ export default function Home() {
                     </button>
                 </div>
                 {/* Use the advanced EventComponent which includes SearchBar, Carousel, and EventGrid with filters */}
-                <EventComponent />
+                <EventComponent events={events} />
                 <EventForm onSave={handleSaveEvent} />
                 <Footer />
             </div>

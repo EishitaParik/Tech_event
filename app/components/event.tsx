@@ -81,9 +81,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
                   onChange={(e) => setFilterType(e.target.value)}
                   className="ml-2 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                 >
-                  <option value="">All Types</option>
-                  {eventTypes.map((type) => (
-                    <option key={type} value={type}>{type}</option>
+                  <option key="all-types" value="">All Types</option>
+                  {eventTypes.map((type, idx) => (
+                    <option key={`event-type-${type}-${idx}`} value={type}>{type}</option>
                   ))}
                 </select>
               )}
@@ -94,9 +94,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
                   onChange={(e) => setFilterLocation(e.target.value)}
                   className="ml-2 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                 >
-                  <option value="">All Locations</option>
-                  {locations.map((loc) => (
-                    <option key={loc} value={loc}>{loc}</option>
+                  <option key="all-locations" value="">All Locations</option>
+                  {locations.map((loc, idx) => (
+                    <option key={`location-${loc}-${idx}`} value={loc}>{loc}</option>
                   ))}
                 </select>
               )}
@@ -400,10 +400,10 @@ const EventGrid: React.FC<EventGridProps> = ({ events, onRegisterNow }) => {
   // Advanced filter logic
   const filteredEvents = displayEvents.filter(event => {
     const matchesQuery =
-      event["Event Name"].toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.Location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event["Event Type"].toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event["Organizer Name"].toLowerCase().includes(searchQuery.toLowerCase());
+      (event["Event Name"]?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.Location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event["Event Type"]?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event["Organizer Name"]?.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesType = filterType ? event["Event Type"] === filterType : true;
     const matchesLocation = filterLocation ? event.Location === filterLocation : true;
     const matchesDate = filterDate ? event["Event Date"] === filterDate : true;
@@ -791,8 +791,12 @@ const RegistrationFormModal: React.FC<RegistrationFormModalProps> = ({ isOpen, o
   );
 };
 
-// Main App component
-const App: React.FC = () => {
+// Main EventComponent that receives events as prop
+interface EventComponentProps {
+  events: any[];
+}
+
+const EventComponent: React.FC<EventComponentProps> = ({ events }) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = () => setModalOpen(true);
@@ -819,12 +823,11 @@ const App: React.FC = () => {
           transform: scale(1.02);
         }
       `}</style>
-      
       <Carousel onJoinEvent={handleOpenModal} />
-      <EventGrid onRegisterNow={handleOpenModal} />
+      <EventGrid events={events} onRegisterNow={handleOpenModal} />
       <RegistrationFormModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 };
 
-export default App;
+export default EventComponent;
