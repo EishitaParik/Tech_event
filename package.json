@@ -19,6 +19,12 @@
     "postprocessing": "^6.37.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+
+    
+    
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+
     "three": "^0.178.0"
   },
   "devDependencies": {

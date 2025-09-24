@@ -42,20 +42,29 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
     // Simulate an API call with a 1.5-second delay
     setTimeout(() => {
       try {
         console.log("Event data submitted:", eventData);
-        setModalMessage("Event saved successfully!");
+        setModalMessage("Event added successfully!");
         setModalType("success");
         setShowModal(true);
         if (onSave) {
           onSave(eventData);
         }
+        // Reset form after successful submission
+        setEventData({
+          eventName: "",
+          location: "",
+          address: "",
+          organizer: "",
+          date: "",
+          time: "",
+          eventType: "Conference",
+        });
       } catch (error) {
         console.error("Failed to save event:", error);
-        setModalMessage("Failed to save event. Please try again.");
+        setModalMessage("Failed to add event. Please try again.");
         setModalType("error");
         setShowModal(true);
       } finally {
@@ -64,7 +73,12 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
     }, 1500);
   };
 
-  // Function to get event-type-specific colors
+
+  
+
+  // Function to get event-type-specific colors for the new theme
+
+  
   const getEventTypeColor = (type: string) => {
     const colors = {
       'Conference': 'from-red-600 to-red-800',
