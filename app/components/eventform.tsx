@@ -46,7 +46,6 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
     // Simulate an API call with a 1.5-second delay
     setTimeout(() => {
       try {
-        // Simulate a successful API response
         console.log("Event data submitted:", eventData);
         setModalMessage("Event saved successfully!");
         setModalType("success");
@@ -55,7 +54,6 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
           onSave(eventData);
         }
       } catch (error) {
-        // Simulate an error response
         console.error("Failed to save event:", error);
         setModalMessage("Failed to save event. Please try again.");
         setModalType("error");
@@ -66,43 +64,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
     }, 1500);
   };
 
-
-  
-  return (
-    <div id="eventform" className="max-w-4xl mx-auto bg-white dark:bg-gray-900 text-gray-800 dark:text-white mb-20 mt-5 shadow-lg rounded-xl p-6 md:p-8 lg:p-10 transition-colors duration-500">
-      <h2 className="text-3xl font-bold text-center mb-6">
-        {initialEvent ? "Edit Event" : "Create New Event"}
-      </h2>
-
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {/* Event Name */}
-        <div className="col-span-1">
-          <label className="block font-medium">Event Name</label>
-          <input
-            type="text"
-            name="eventName"
-            placeholder="Enter event name"
-            value={eventData.eventName}
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            required
-          />
-        </div>
-
-        {/* Location */}
-        <div className="col-span-1">
-          <label className="block font-medium">Location</label>
-          <input
-            type="text"
-            name="location"
-            placeholder="Enter location"
-            value={eventData.location}
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            required
-          />
-=======
-  // Function to get event-type-specific colors for the new theme
+  // Function to get event-type-specific colors
   const getEventTypeColor = (type: string) => {
     const colors = {
       'Conference': 'from-red-600 to-red-800',
@@ -115,7 +77,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
     return colors[type as keyof typeof colors] || colors.Other;
   };
 
-  // A simple modal component to replace `alert()`
+  // Simple modal component
   const Modal = ({ message, type, onClose }: { message: string, type: "success" | "error" | null, onClose: () => void }) => {
     const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
     return (
@@ -125,89 +87,14 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
             <X size={24} />
           </button>
           <div className="text-center font-bold text-xl">{message}</div>
-
-        
         </div>
       </div>
     );
   };
 
-        {/* Address */}
-        <div className="sm:col-span-2">
-          <label className="block font-medium">Address</label>
-          <input
-            type="text"
-            name="address"
-            placeholder="Enter address"
-            value={eventData.address}
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            required
-          />
-        </div>
-
-        {/* Organizer Name */}
-        <div className="col-span-1">
-          <label className="block font-medium">Organizer Name</label>
-          <input
-            type="text"
-            name="organizer"
-            placeholder="Organizer name"
-            value={eventData.organizer}
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            required
-          />
-        </div>
-
-        {/* Date & Time */}
-        <div className="grid grid-cols-2 gap-4 col-span-1 sm:col-span-2">
-          <div>
-            <label className="block font-medium">Date</label>
-            <input
-              type="date"
-              name="date"
-              value={eventData.date}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block font-medium">Time</label>
-            <input
-              type="time"
-              name="time"
-              value={eventData.time}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              required
-            />
-          </div>
-        </div>
-
-        {/* Event Type */}
-        <div className="col-span-1 sm:col-span-2">
-          <label className="block font-medium">Event Type</label>
-          <select
-            name="eventType"
-            value={eventData.eventType}
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          >
-            <option>Conference</option>
-            <option>Meeting</option>
-            <option>Workshop</option>
-            <option>Networking</option>
-            <option>Webinar</option>
-            <option>Other</option>
-          </select>
-        </div>
-=======
   return (
     <div className="min-h-screen bg-white relative overflow-hidden py-16" id="eventform">
-      {/* Background Elements for visual interest */}
+      {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 right-20 w-80 h-80 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-gray-900/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
@@ -215,8 +102,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header Section */}
+        {/* Header */}
         <div className={`text-center mb-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-gray-900">
@@ -237,203 +123,139 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-red-900 via-rose-900 to-black rounded-3xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
             
-            {/* Form Content */}
             <div className="relative bg-white backdrop-blur-xl rounded-3xl border border-gray-200 shadow-2xl overflow-hidden">
-              
-              {/* Form Header accent */}
               <div className={`h-2 bg-gradient-to-r ${getEventTypeColor(eventData.eventType)}`}></div>
               
               <div className="p-6 sm:p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  
-                  {/* Row 1: Event Name & Location */}
+                  {/* Event Name & Location */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Event Name */}
                     <div className="space-y-2">
                       <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
-                        <Sparkles className="w-4 h-4 text-red-900 mr-2" />
-                        Event Name
+                        <Sparkles className="w-4 h-4 text-red-900 mr-2" /> Event Name
                       </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name="eventName"
-                          placeholder="Enter your amazing event name"
-                          value={eventData.eventName}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField('eventName')}
-                          onBlur={() => setFocusedField(null)}
-                          className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none ${
-                            focusedField === 'eventName' 
-                              ? 'border-red-900 shadow-lg shadow-red-500/25 scale-[1.01]' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    {/* Location */}
-                    <div className="space-y-2">
-                      <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
-                        <MapPin className="w-4 h-4 text-gray-900 mr-2" />
-                        Location
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name="location"
-                          placeholder="City or venue name"
-                          value={eventData.location}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField('location')}
-                          onBlur={() => setFocusedField(null)}
-                          className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none ${
-                            focusedField === 'location' 
-                              ? 'border-gray-900 shadow-lg shadow-gray-900/25 scale-[1.01]' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Row 2: Full Address */}
-                  <div className="space-y-2">
-                    <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
-                      <MapPin className="w-4 h-4 text-rose-900 mr-2" />
-                      Full Address
-                    </label>
-                    <div className="relative">
                       <input
                         type="text"
-                        name="address"
-                        placeholder="Complete address with landmarks"
-                        value={eventData.address}
+                        name="eventName"
+                        placeholder="Enter your amazing event name"
+                        value={eventData.eventName}
                         onChange={handleChange}
-                        onFocus={() => setFocusedField('address')}
+                        onFocus={() => setFocusedField('eventName')}
                         onBlur={() => setFocusedField(null)}
-                        className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none ${
-                          focusedField === 'address' 
-                            ? 'border-rose-900 shadow-lg shadow-rose-500/25 scale-[1.01]' 
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
+                        className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none ${focusedField === 'eventName' ? 'border-red-900 shadow-lg shadow-red-500/25 scale-[1.01]' : 'border-gray-200 hover:border-gray-300'}`}
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
+                        <MapPin className="w-4 h-4 text-gray-900 mr-2" /> Location
+                      </label>
+                      <input
+                        type="text"
+                        name="location"
+                        placeholder="City or venue name"
+                        value={eventData.location}
+                        onChange={handleChange}
+                        onFocus={() => setFocusedField('location')}
+                        onBlur={() => setFocusedField(null)}
+                        className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none ${focusedField === 'location' ? 'border-gray-900 shadow-lg shadow-gray-900/25 scale-[1.01]' : 'border-gray-200 hover:border-gray-300'}`}
                         required
                       />
                     </div>
                   </div>
 
-                  {/* Row 3: Organizer & Event Type */}
+                  {/* Full Address */}
+                  <div className="space-y-2">
+                    <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
+                      <MapPin className="w-4 h-4 text-rose-900 mr-2" /> Full Address
+                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      placeholder="Complete address with landmarks"
+                      value={eventData.address}
+                      onChange={handleChange}
+                      onFocus={() => setFocusedField('address')}
+                      onBlur={() => setFocusedField(null)}
+                      className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none ${focusedField === 'address' ? 'border-rose-900 shadow-lg shadow-rose-500/25 scale-[1.01]' : 'border-gray-200 hover:border-gray-300'}`}
+                      required
+                    />
+                  </div>
+
+                  {/* Organizer & Event Type */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Organizer */}
                     <div className="space-y-2">
                       <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
-                        <User className="w-4 h-4 text-red-900 mr-2" />
-                        Organizer Name
+                        <User className="w-4 h-4 text-red-900 mr-2" /> Organizer Name
                       </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name="organizer"
-                          placeholder="Your name or organization"
-                          value={eventData.organizer}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField('organizer')}
-                          onBlur={() => setFocusedField(null)}
-                          className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none ${
-                            focusedField === 'organizer' 
-                              ? 'border-red-900 shadow-lg shadow-red-500/25 scale-[1.01]' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          required
-                        />
-                      </div>
+                      <input
+                        type="text"
+                        name="organizer"
+                        placeholder="Your name or organization"
+                        value={eventData.organizer}
+                        onChange={handleChange}
+                        onFocus={() => setFocusedField('organizer')}
+                        onBlur={() => setFocusedField(null)}
+                        className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none ${focusedField === 'organizer' ? 'border-red-900 shadow-lg shadow-red-500/25 scale-[1.01]' : 'border-gray-200 hover:border-gray-300'}`}
+                        required
+                      />
                     </div>
 
-                    {/* Event Type */}
                     <div className="space-y-2">
                       <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
-                        <Sparkles className="w-4 h-4 text-black mr-2" />
-                        Event Type
+                        <Sparkles className="w-4 h-4 text-black mr-2" /> Event Type
                       </label>
-                      <div className="relative">
-                        <select
-                          name="eventType"
-                          value={eventData.eventType}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField('eventType')}
-                          onBlur={() => setFocusedField(null)}
-                          className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 font-medium transition-all duration-300 focus:outline-none appearance-none cursor-pointer ${
-                            focusedField === 'eventType' 
-                              ? 'border-black shadow-lg shadow-black/25 scale-[1.01]' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <option value="Conference">Conference</option>
-                          <option value="Meeting">Meeting</option>
-                          <option value="Workshop">Workshop</option>
-                          <option value="Networking">Networking</option>
-                          <option value="Webinar">Webinar</option>
-                          <option value="Other">Other</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
-                          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </div>
-                      </div>
+                      <select
+                        name="eventType"
+                        value={eventData.eventType}
+                        onChange={handleChange}
+                        onFocus={() => setFocusedField('eventType')}
+                        onBlur={() => setFocusedField(null)}
+                        className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 font-medium transition-all duration-300 focus:outline-none appearance-none cursor-pointer ${focusedField === 'eventType' ? 'border-black shadow-lg shadow-black/25 scale-[1.01]' : 'border-gray-200 hover:border-gray-300'}`}
+                      >
+                        <option value="Conference">Conference</option>
+                        <option value="Meeting">Meeting</option>
+                        <option value="Workshop">Workshop</option>
+                        <option value="Networking">Networking</option>
+                        <option value="Webinar">Webinar</option>
+                        <option value="Other">Other</option>
+                      </select>
                     </div>
                   </div>
 
-                  {/* Row 4: Date & Time */}
+                  {/* Date & Time */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Date */}
                     <div className="space-y-2">
                       <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
-                        <Calendar className="w-4 h-4 text-rose-900 mr-2" />
-                        Event Date
+                        <Calendar className="w-4 h-4 text-rose-900 mr-2" /> Event Date
                       </label>
-                      <div className="relative">
-                        <input
-                          type="date"
-                          name="date"
-                          value={eventData.date}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField('date')}
-                          onBlur={() => setFocusedField(null)}
-                          className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 font-medium transition-all duration-300 focus:outline-none ${
-                            focusedField === 'date' 
-                              ? 'border-rose-900 shadow-lg shadow-rose-500/25 scale-[1.01]' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          required
-                        />
-                      </div>
+                      <input
+                        type="date"
+                        name="date"
+                        value={eventData.date}
+                        onChange={handleChange}
+                        onFocus={() => setFocusedField('date')}
+                        onBlur={() => setFocusedField(null)}
+                        className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 font-medium transition-all duration-300 focus:outline-none ${focusedField === 'date' ? 'border-rose-900 shadow-lg shadow-rose-500/25 scale-[1.01]' : 'border-gray-200 hover:border-gray-300'}`}
+                        required
+                      />
                     </div>
 
-                    {/* Time */}
                     <div className="space-y-2">
                       <label className="flex items-center text-gray-700 font-semibold text-base mb-2">
-                        <Clock className="w-4 h-4 text-gray-800 mr-2" />
-                        Event Time
+                        <Clock className="w-4 h-4 text-gray-800 mr-2" /> Event Time
                       </label>
-                      <div className="relative">
-                        <input
-                          type="time"
-                          name="time"
-                          value={eventData.time}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField('time')}
-                          onBlur={() => setFocusedField(null)}
-                          className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 font-medium transition-all duration-300 focus:outline-none ${
-                            focusedField === 'time' 
-                              ? 'border-gray-800 shadow-lg shadow-gray-800/25 scale-[1.01]' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          required
-                        />
-                      </div>
+                      <input
+                        type="time"
+                        name="time"
+                        value={eventData.time}
+                        onChange={handleChange}
+                        onFocus={() => setFocusedField('time')}
+                        onBlur={() => setFocusedField(null)}
+                        className={`w-full p-3 bg-white border-2 rounded-lg text-gray-800 font-medium transition-all duration-300 focus:outline-none ${focusedField === 'time' ? 'border-gray-800 shadow-lg shadow-gray-800/25 scale-[1.01]' : 'border-gray-200 hover:border-gray-300'}`}
+                        required
+                      />
                     </div>
                   </div>
 
@@ -442,9 +264,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className={`group relative px-10 py-3 bg-gradient-to-r ${getEventTypeColor(eventData.eventType)} text-white font-bold text-base rounded-xl shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
-                        !isSubmitting ? 'hover:scale-105 transform' : ''
-                      }`}
+                      className={`group relative px-10 py-3 bg-gradient-to-r ${getEventTypeColor(eventData.eventType)} text-white font-bold text-base rounded-xl shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${!isSubmitting ? 'hover:scale-105 transform' : ''}`}
                     >
                       <span className="relative z-10 flex items-center justify-center">
                         {isSubmitting ? (
@@ -459,18 +279,14 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
                           </>
                         )}
                       </span>
-                      {!isSubmitting && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-black via-rose-900 to-red-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                      )}
                     </button>
                   </div>
 
-                  {/* Event Preview Card */}
+                  {/* Event Preview */}
                   {eventData.eventName && (
                     <div className="mt-8 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200">
                       <h3 className="text-base font-bold text-gray-800 mb-3 flex items-center">
-                        <Sparkles className="w-4 h-4 text-red-900 mr-2" />
-                        Event Preview
+                        <Sparkles className="w-4 h-4 text-red-900 mr-2" /> Event Preview
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         <div className="flex items-center text-gray-600">
@@ -494,12 +310,14 @@ const EventForm: React.FC<EventFormProps> = ({ onSave, initialEvent }) => {
                       </div>
                     </div>
                   )}
+
                 </form>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       {showModal && <Modal message={modalMessage} type={modalType} onClose={() => setShowModal(false)} />}
     </div>
   );
